@@ -25,7 +25,7 @@ The playbook is organized as atomic, interconnected notes:
 
 ## The core idea
 
-Every AI tool today treats context as either fully manual (copy-paste) or fully automatic (RAG, memory). Nobody is building the middle ground: **human-guided context composition**.
+Most AI tools today treat context as either fully manual (copy-paste) or fully automatic (RAG, memory). A few Chrome extensions are starting to explore the middle ground, but none have nailed it yet: **human-guided context composition**.
 
 The Context Composer is a pre-flight interface where you see, adjust, and send context before every AI interaction. The AI proposes what context might be relevant. You confirm, remove, or add items in under 5 seconds. Then the prompt sends with exactly the right context.
 
@@ -39,7 +39,7 @@ Research across ~30 GitHub repos, Chrome Web Store extensions (~22,400 installs)
 2. **Memory engines** — store everything, retrieve later (passive, no curation)
 3. **Standalone chat UIs** — requires switching interfaces (high adoption barrier)
 
-Nobody is building the visual, non-technical, pre-flight context layer that works *inside* existing AI tools. That's the gap.
+A handful of Chrome extensions (MemoryPlugin, Context Compass, AI Context Flow) are experimenting in this direction, but none yet offer a complete visual, non-technical, pre-flight context layer that works *inside* existing AI tools. That's the gap.
 
 ## Contributing
 
