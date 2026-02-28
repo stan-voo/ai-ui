@@ -71,4 +71,4 @@ If this resonates, the best thing you can do is [open an issue](../../issues) an
 
 ## License
 
-This work is shared openly for discussion and collaboration. If you want to build on these ideas, go for it — just link back here.
+This work is licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE). You're free to share and adapt the material for any purpose, including commercial, as long as you give appropriate credit and link back to this repository.
