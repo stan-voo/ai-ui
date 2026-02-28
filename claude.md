@@ -44,12 +44,25 @@ status: seed | growing | mature
 
 ## Folder structure
 
-- **Root (`/`)** — Atomic notes (the results/output of the vault)
-- **`sources/`** — Imported knowledge: original vision documents, external analyses. Treat as read-only reference.
-- **`project/`** — Work-related files: roadmaps, revisions, task lists, operational pages
-- **`assets/`** — Images and SVGs (public-facing). All visual assets go here.
+- **Root (`/`)** — Atomic notes (the results/output of the vault) — **public**
+- **`assets/`** — Images and SVGs (public-facing) — **public**
+- **`sources/`** — Imported knowledge: original vision documents, external analyses. Treat as read-only reference — **private** (gitignored)
+- **`project/`** — Work-related files: roadmaps, revisions, task lists, operational pages — **private** (gitignored)
 
 Atomic notes link back to sources but don't duplicate their full content.
+
+## Repository structure and visibility
+
+This repo is public on GitHub. Not everything in the maintainer's local vault is tracked in git:
+
+- **Public (tracked in git):** Root-level `.md` files (atomic notes, navigation pages) and `assets/`. This is what contributors see when they fork the repo.
+- **Private (gitignored):** `project/` and `sources/`. These exist only in the maintainer's local Obsidian vault. Forks and clones will not contain these folders.
+
+Because of this split:
+
+- References to `[[source-file-name]]` in note frontmatter may point to files that don't exist in a fork — this is expected and normal. Leave these references intact.
+- `Playbook Map.md` and `Start Here.md` are the navigation entry points for anyone exploring the repo.
+- Contributors should only add or modify public files (root-level notes and `assets/`).
 
 ## How to add new knowledge
 
@@ -75,6 +88,41 @@ When making a major revision (adding new concepts, restructuring sections, chang
 - Which notes were affected
 
 Minor fixes (typos, link corrections, small wording tweaks) do not need revision entries.
+
+## Git workflow
+
+**For contributors:** Fork the repo → create a feature branch → make changes → open a PR. One atomic note per commit where practical. PRs should explain the "why" behind the change.
+
+**Branch naming:**
+
+- `add/note-name` — new notes
+- `update/note-name` — edits to existing notes
+- `fix/note-name` — corrections or broken links
+
+**Commit messages:** Imperative mood, concise. Examples:
+
+- `Add lost-in-the-middle-effect note`
+- `Update context-rot with two-level framing`
+- `Fix broken links in memory-governance`
+
+**What belongs in a PR:**
+
+- New atomic notes
+- Edits to existing notes
+- New links between notes
+- Corrections and research additions
+
+**What belongs in an issue:**
+
+- Critiques or questions about the framing
+- Suggestions that need conversation before action
+- Discussion of missing concepts or alternative perspectives
+
+**Don't commit:**
+
+- Private operational files (`project/`, `sources/`)
+- Obsidian configuration (`.obsidian/`)
+- Claude Code settings (`.claude/`)
 
 ## What NOT to do
 
