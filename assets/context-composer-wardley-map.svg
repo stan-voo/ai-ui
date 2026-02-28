@@ -1,0 +1,273 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#121a2e;stop-opacity:1" />
+    </linearGradient>
+    <!-- Sweet spot glow -->
+    <radialGradient id="sweetSpot" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#22c55e;stop-opacity:0" />
+    </radialGradient>
+    <!-- Danger zone glow -->
+    <radialGradient id="dangerZone" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#ef4444;stop-opacity:0" />
+    </radialGradient>
+    <!-- Opportunity zone glow -->
+    <radialGradient id="opportunityZone" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.12" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0" />
+    </radialGradient>
+    <!-- Arrow markers -->
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e" opacity="0.7"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b" opacity="0.7"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ef4444" opacity="0.6"/>
+    </marker>
+    <marker id="arrowWhite" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#94a3b8" opacity="0.5"/>
+    </marker>
+    <!-- Filters -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="textShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.8"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="820" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- Title -->
+  <text x="600" y="42" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="700" letter-spacing="0.5" filter="url(#textShadow)">Wardley Map — Context Composer Strategic Positioning</text>
+  <text x="600" y="64" text-anchor="middle" fill="#64748b" font-size="12" letter-spacing="1">USER: AI POWER USER WANTING BETTER AI OUTPUT</text>
+
+  <!-- Map area -->
+  <g transform="translate(100, 85)">
+    <!-- Grid area: 1000 x 680 -->
+
+    <!-- Subtle grid lines -->
+    <g stroke="#1e293b" stroke-width="0.5">
+      <!-- Vertical phase dividers -->
+      <line x1="250" y1="0" x2="250" y2="680" stroke-dasharray="4,6"/>
+      <line x1="500" y1="0" x2="500" y2="680" stroke-dasharray="4,6"/>
+      <line x1="750" y1="0" x2="750" y2="680" stroke-dasharray="4,6"/>
+      <!-- Horizontal guides -->
+      <line x1="0" y1="170" x2="1000" y2="170" stroke-dasharray="4,6"/>
+      <line x1="0" y1="340" x2="1000" y2="340" stroke-dasharray="4,6"/>
+      <line x1="0" y1="510" x2="1000" y2="510" stroke-dasharray="4,6"/>
+    </g>
+
+    <!-- Evolution phase labels (X-axis) -->
+    <text x="125" y="700" text-anchor="middle" fill="#475569" font-size="11" font-weight="600" letter-spacing="2">GENESIS</text>
+    <text x="375" y="700" text-anchor="middle" fill="#475569" font-size="11" font-weight="600" letter-spacing="2">CUSTOM</text>
+    <text x="625" y="700" text-anchor="middle" fill="#475569" font-size="11" font-weight="600" letter-spacing="2">PRODUCT</text>
+    <text x="875" y="700" text-anchor="middle" fill="#475569" font-size="11" font-weight="600" letter-spacing="2">COMMODITY</text>
+
+    <!-- X-axis arrow -->
+    <line x1="0" y1="680" x2="990" y2="680" stroke="#334155" stroke-width="1.5"/>
+    <polygon points="990,675 1000,680 990,685" fill="#334155"/>
+    <text x="1000" y="700" text-anchor="end" fill="#64748b" font-size="10" font-style="italic">Evolution &#x2192;</text>
+
+    <!-- Y-axis labels -->
+    <text x="-15" y="85" text-anchor="end" fill="#475569" font-size="10" font-weight="600" transform="rotate(-90, -15, 85)" letter-spacing="2">VISIBLE</text>
+    <text x="-15" y="595" text-anchor="end" fill="#475569" font-size="10" font-weight="600" transform="rotate(-90, -15, 595)" letter-spacing="2">INVISIBLE</text>
+
+    <!-- Y-axis arrow -->
+    <line x1="0" y1="680" x2="0" y2="10" stroke="#334155" stroke-width="1.5"/>
+    <polygon points="-5,10 0,0 5,10" fill="#334155"/>
+    <text x="-8" y="20" text-anchor="end" fill="#64748b" font-size="10" font-style="italic" transform="rotate(-90, -8, 20)">Value Chain &#x2191;</text>
+
+    <!-- ==================== STRATEGIC ZONES ==================== -->
+
+    <!-- Sweet Spot Zone (around Context Composer) -->
+    <ellipse cx="480" cy="220" rx="150" ry="100" fill="url(#sweetSpot)"/>
+    <text x="480" y="128" text-anchor="middle" fill="#22c55e" font-size="10" font-weight="600" opacity="0.7" letter-spacing="1.5">&#x2605; SWEET SPOT</text>
+
+    <!-- Opportunity Zone (around Governed Memory) -->
+    <ellipse cx="300" cy="310" rx="130" ry="90" fill="url(#opportunityZone)"/>
+    <text x="300" y="228" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="600" opacity="0.6" letter-spacing="1.5">OPPORTUNITY ZONE</text>
+
+    <!-- Danger/Risk Zone (Thread Workspaces / PKM as Context OS — premature) -->
+    <ellipse cx="140" cy="350" rx="120" ry="90" fill="url(#dangerZone)"/>
+    <text x="140" y="268" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600" opacity="0.6" letter-spacing="1.5">&#x26A0; PREMATURE</text>
+
+    <!-- ==================== DEPENDENCY LINES ==================== -->
+    <g stroke="#334155" stroke-width="1" opacity="0.5">
+      <!-- Better AI Output → Context Assembly -->
+      <line x1="375" y1="65" x2="340" y2="130"/>
+      <!-- Better AI Output → Context Composer -->
+      <line x1="400" y1="60" x2="460" y2="200"/>
+      <!-- Context Assembly → Context Composer -->
+      <line x1="350" y1="150" x2="450" y2="205"/>
+      <!-- Context Composer → Governed Memory -->
+      <line x1="460" y1="240" x2="320" y2="300"/>
+      <!-- Context Composer → Context Pack -->
+      <line x1="480" y1="245" x2="420" y2="400"/>
+      <!-- Context Composer → LLM APIs -->
+      <line x1="500" y1="245" x2="680" y2="540"/>
+      <!-- Governed Memory → AI Memory Validator -->
+      <line x1="280" y1="300" x2="170" y2="200"/>
+      <!-- Governed Memory → Thread Workspaces -->
+      <line x1="280" y1="330" x2="160" y2="355"/>
+      <!-- Context Pack → Knowledge Substrate -->
+      <line x1="440" y1="420" x2="810" y2="490"/>
+      <!-- LLM APIs → Cloud/Compute -->
+      <line x1="710" y1="560" x2="850" y2="615"/>
+      <!-- Knowledge Substrate → Cloud/Compute -->
+      <line x1="840" y1="505" x2="860" y2="610"/>
+    </g>
+
+    <!-- ==================== EVOLUTION ARROWS ==================== -->
+
+    <!-- Context Composer moving rightward toward Product -->
+    <path d="M 510,225 C 550,218 580,215 620,215" stroke="#22c55e" stroke-width="2.5" fill="none" stroke-dasharray="8,4" marker-end="url(#arrowGreen)" opacity="0.8"/>
+    <text x="570" y="208" text-anchor="middle" fill="#22c55e" font-size="8" opacity="0.7" font-style="italic">productizing</text>
+
+    <!-- Governed Memory moving rightward toward Custom→Product -->
+    <path d="M 340,315 C 390,310 430,308 470,305" stroke="#f59e0b" stroke-width="1.5" fill="none" stroke-dasharray="6,4" marker-end="url(#arrowAmber)" opacity="0.6"/>
+    <text x="410" y="300" text-anchor="middle" fill="#f59e0b" font-size="8" opacity="0.6" font-style="italic">maturing</text>
+
+    <!-- Thread Workspaces — too early warning -->
+    <path d="M 170,375 C 130,410 120,440 125,470" stroke="#ef4444" stroke-width="1.5" fill="none" stroke-dasharray="6,4" marker-end="url(#arrowRed)" opacity="0.4"/>
+    <text x="85" y="435" text-anchor="middle" fill="#ef4444" font-size="8" opacity="0.5" font-style="italic">premature to build</text>
+
+    <!-- ==================== NODES ==================== -->
+
+    <!-- === TOP LAYER: User Need === -->
+
+    <!-- Better AI Output (user need) -->
+    <circle cx="375" cy="50" r="10" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+    <circle cx="375" cy="50" r="4" fill="#e2e8f0"/>
+    <text x="395" y="45" fill="#e2e8f0" font-size="12" font-weight="600">Better AI Output</text>
+    <text x="395" y="60" fill="#94a3b8" font-size="9">(user need)</text>
+
+    <!-- Context Assembly (pain point) -->
+    <circle cx="320" cy="140" r="9" fill="none" stroke="#f59e0b" stroke-width="2"/>
+    <circle cx="320" cy="140" r="4" fill="#f59e0b"/>
+    <text x="340" y="135" fill="#f59e0b" font-size="11" font-weight="600">Context Assembly</text>
+    <text x="340" y="148" fill="#b47b16" font-size="8">pain point &#x2014; hidden labor</text>
+
+    <!-- === HIGH LAYER: Products === -->
+
+    <!-- Context Composer (sweet spot product) -->
+    <rect x="430" y="200" width="100" height="36" rx="6" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+    <rect x="432" y="202" width="96" height="32" rx="5" fill="#22c55e" opacity="0.08"/>
+    <text x="480" y="216" text-anchor="middle" fill="#22c55e" font-size="12" font-weight="700">Context</text>
+    <text x="480" y="230" text-anchor="middle" fill="#22c55e" font-size="12" font-weight="700">Composer</text>
+
+    <!-- AI Memory Validator -->
+    <circle cx="155" cy="190" r="8" fill="none" stroke="#a78bfa" stroke-width="2"/>
+    <circle cx="155" cy="190" r="3.5" fill="#a78bfa"/>
+    <text x="80" y="183" fill="#a78bfa" font-size="11" font-weight="500">AI Memory</text>
+    <text x="80" y="196" fill="#a78bfa" font-size="11" font-weight="500">Validator</text>
+    <text x="80" y="209" fill="#7c6cb0" font-size="8">genesis &#x2014; high risk</text>
+
+    <!-- === MID-HIGH LAYER: Trust/Memory === -->
+
+    <!-- Governed Memory -->
+    <circle cx="300" cy="315" r="10" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+    <circle cx="300" cy="315" r="4.5" fill="#f59e0b"/>
+    <text x="320" y="310" fill="#f59e0b" font-size="12" font-weight="600">Governed Memory</text>
+    <text x="320" y="324" fill="#b47b16" font-size="9">trust layer &#x2014; AI proposes, humans decide</text>
+
+    <!-- Thread Workspaces -->
+    <circle cx="145" cy="360" r="8" fill="none" stroke="#c084fc" stroke-width="1.5"/>
+    <circle cx="145" cy="360" r="3.5" fill="#c084fc"/>
+    <text x="165" y="356" fill="#c084fc" font-size="10" font-weight="500">Thread Workspaces</text>
+    <text x="165" y="369" fill="#9061d4" font-size="8">genesis &#x2014; behavior change required</text>
+
+    <!-- PKM as Context OS (faint — premature) -->
+    <circle cx="120" cy="415" r="7" fill="none" stroke="#c084fc" stroke-width="1" opacity="0.5"/>
+    <circle cx="120" cy="415" r="3" fill="#c084fc" opacity="0.5"/>
+    <text x="138" y="412" fill="#c084fc" font-size="9" font-weight="500" opacity="0.5">PKM as Context OS</text>
+    <text x="138" y="424" fill="#9061d4" font-size="8" opacity="0.5">platform fantasy territory</text>
+
+    <!-- === MID LAYER: Components === -->
+
+    <!-- Context Pack -->
+    <circle cx="410" cy="410" r="8" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+    <circle cx="410" cy="410" r="3.5" fill="#38bdf8"/>
+    <text x="428" y="406" fill="#38bdf8" font-size="10" font-weight="500">Context Pack</text>
+    <text x="428" y="418" fill="#2092c4" font-size="8">curated context bundle</text>
+
+    <!-- === LOWER LAYERS: Infrastructure === -->
+
+    <!-- Knowledge Substrate (Markdown) -->
+    <circle cx="830" cy="490" r="7" fill="none" stroke="#64748b" stroke-width="1.5"/>
+    <circle cx="830" cy="490" r="3" fill="#64748b"/>
+    <text x="848" y="486" fill="#64748b" font-size="10">Knowledge Substrate</text>
+    <text x="848" y="498" fill="#475569" font-size="8">Markdown &#x2014; commodity</text>
+
+    <!-- LLM APIs -->
+    <circle cx="690" cy="555" r="8" fill="none" stroke="#64748b" stroke-width="1.5"/>
+    <circle cx="690" cy="555" r="3.5" fill="#64748b"/>
+    <text x="650" y="575" fill="#64748b" font-size="10">LLM APIs</text>
+    <text x="650" y="587" fill="#475569" font-size="8">OpenAI &#x2022; Anthropic &#x2022; Google</text>
+
+    <!-- Cloud/Compute -->
+    <circle cx="870" cy="625" r="7" fill="none" stroke="#475569" stroke-width="1.5"/>
+    <circle cx="870" cy="625" r="3" fill="#475569"/>
+    <text x="888" y="621" fill="#475569" font-size="9">Cloud / Compute</text>
+    <text x="888" y="633" fill="#374151" font-size="8">commodity infrastructure</text>
+
+    <!-- ==================== STRATEGIC PATH ANNOTATION ==================== -->
+
+    <g transform="translate(710, 95)">
+      <rect x="0" y="0" width="270" height="155" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+      <text x="15" y="22" fill="#e2e8f0" font-size="11" font-weight="700">STRATEGIC PATH</text>
+      <line x1="15" y1="30" x2="255" y2="30" stroke="#1e293b" stroke-width="0.5"/>
+
+      <rect x="21" y="40" width="8" height="8" rx="2" fill="#22c55e"/>
+      <text x="38" y="49" fill="#22c55e" font-size="10" font-weight="600">&#x2460; Context Composer MVP (now)</text>
+
+      <circle cx="25" cy="70" r="4" fill="#f59e0b"/>
+      <text x="38" y="74" fill="#f59e0b" font-size="10">&#x2461; Add Governed Memory (6-12 mo)</text>
+
+      <circle cx="25" cy="92" r="4" fill="#c084fc" opacity="0.6"/>
+      <text x="38" y="96" fill="#c084fc" font-size="10" opacity="0.7">&#x2462; Thread Workspaces (if validated, 12-24 mo)</text>
+
+      <line x1="15" y1="110" x2="255" y2="110" stroke="#1e293b" stroke-width="0.5"/>
+      <text x="15" y="126" fill="#64748b" font-size="9" font-style="italic">"Vertical AI SaaS for knowledge workers"</text>
+      <text x="15" y="142" fill="#64748b" font-size="9" font-style="italic">"Start near the user, not near GPUs"</text>
+    </g>
+
+    <!-- ==================== MOAT ANNOTATION ==================== -->
+
+    <g transform="translate(560, 300)">
+      <rect x="0" y="0" width="220" height="50" rx="6" fill="#0f172a" stroke="#22c55e" stroke-width="0.5" opacity="0.8"/>
+      <text x="15" y="19" fill="#22c55e" font-size="9" font-weight="600" opacity="0.8">DURABLE MOAT</text>
+      <text x="15" y="34" fill="#94a3b8" font-size="8">Context curation is behavioral, not technical.</text>
+      <text x="15" y="44" fill="#94a3b8" font-size="8">Infrastructure commoditizes. Judgment doesn't.</text>
+    </g>
+
+    <!-- ==================== DIRECTION ANNOTATIONS ==================== -->
+
+    <!-- Commoditization pressure arrow at bottom -->
+    <g opacity="0.4">
+      <path d="M 400,650 L 850,650" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrowRed)"/>
+      <text x="625" y="668" text-anchor="middle" fill="#ef4444" font-size="9" font-style="italic">commoditization pressure &#x2192;</text>
+    </g>
+
+    <!-- Value migration arrow on left -->
+    <g opacity="0.4">
+      <path d="M 50,550 L 50,100" stroke="#22c55e" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arrowGreen)"/>
+      <text x="30" y="340" fill="#22c55e" font-size="9" font-style="italic" transform="rotate(-90, 30, 340)">value migrates toward user &#x2191;</text>
+    </g>
+
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="800" text-anchor="middle" fill="#334155" font-size="10">Wardley Map &#x00B7; Context Composer Strategic Positioning &#x00B7; Feb 2026 &#x00B7; "Vertical AI SaaS for knowledge workers"</text>
+</svg>

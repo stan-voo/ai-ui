@@ -1,0 +1,12 @@
+# Private folders
+project/
+sources/
+
+# Obsidian config
+.obsidian/
+
+# Claude Code local settings
+.claude/
+
+# OS artifacts
+.DS_Store

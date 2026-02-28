@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Composer — Pitch Deck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #ffffff;
+            --text-muted: #6b7280;
+            --accent-problem: #ef4444;
+            --accent-insight: #f59e0b;
+            --accent-solution: #06b6d4;
+            --accent-evidence: #22c55e;
+            --accent-strategy: #a855f7;
+            --accent-next: #3b82f6;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            top: 24px;
+            right: 32px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--text-muted);
+            z-index: 1000;
+            letter-spacing: 0.05em;
+        }
+
+        .slide-counter .current {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Chapter Navigation */
+        .chapter-nav {
+            position: fixed;
+            left: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chapter-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            opacity: 0.4;
+        }
+
+        .chapter-item:hover {
+            opacity: 0.7;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .chapter-item.active {
+            opacity: 1;
+        }
+
+        .chapter-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .chapter-item.active .chapter-dot {
+            width: 10px;
+            height: 10px;
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .chapter-label {
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+        }
+
+        /* Slides Container */
+        .slides-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            padding: 60px 120px 60px 220px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .big-number {
+            font-size: 12rem;
+            font-weight: 700;
+            line-height: 1;
+            opacity: 0.9;
+        }
+
+        /* Problem Cycle */
+        .problem-cycle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cycle-step {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 16px 32px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            font-size: 1.15rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .cycle-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-problem);
+            min-width: 32px;
+        }
+
+        .cycle-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-problem);
+            opacity: 0.6;
+        }
+
+        /* Comparison Cards */
+        .comparison-container {
+            display: flex;
+            gap: 4rem;
+            width: 100%;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .comp-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 20px;
+            width: 400px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .comp-card.bad {
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .comp-card.good {
+            border: 2px solid rgba(6, 182, 212, 0.5);
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .comp-card.warning {
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .comp-card.highlight {
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .comp-card.purple {
+            border: 2px solid rgba(168, 85, 247, 0.5);
+            background: rgba(168, 85, 247, 0.05);
+        }
+
+        .comp-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .comp-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .comp-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .comp-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Paradigm Shift Table */
+        .shift-table {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            max-width: 800px;
+            margin: 40px auto 0;
+        }
+
+        .shift-row {
+            display: grid;
+            grid-template-columns: 1fr 50px 1fr;
+            gap: 0;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .shift-old {
+            text-align: right;
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            padding-right: 20px;
+        }
+
+        .shift-arrow {
+            text-align: center;
+            color: var(--accent-insight);
+            font-size: 1.5rem;
+        }
+
+        .shift-new {
+            text-align: left;
+            color: var(--accent-insight);
+            font-size: 1.15rem;
+            font-weight: 600;
+            padding-left: 20px;
+        }
+
+        /* Three-Card Flow */
+        .flow-trio {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .flow-card {
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .flow-card.propose {
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .flow-card.adjust {
+            background: rgba(6, 182, 212, 0.12);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+        }
+
+        .flow-card.send {
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .flow-step-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .flow-step-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .flow-step-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* Context Chips Demo */
+        .chips-container {
+            max-width: 700px;
+            margin: 40px auto 0;
+        }
+
+        .chips-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .context-chip {
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .context-chip:hover {
+            background: rgba(6, 182, 212, 0.25);
+        }
+
+        .chip-icon {
+            font-size: 1.1rem;
+        }
+
+        .chip-remove {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .prompt-input-mock {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px 24px;
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-top: 8px;
+        }
+
+        .prompt-input-mock .cursor-blink {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: var(--accent-solution);
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 16px;
+            padding: 32px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(34, 197, 94, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-evidence);
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Recap / Roadmap List */
+        .recap-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .recap-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            padding: 24px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-strategy);
+        }
+
+        .recap-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-strategy);
+            min-width: 50px;
+        }
+
+        .recap-text {
+            font-size: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .recap-text .muted {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Process Flow */
+        .process-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 40px;
+        }
+
+        .process-step {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem 2.5rem;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1.15rem;
+            text-align: center;
+            min-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .process-step.ext {
+            border: 2px solid var(--accent-next);
+            color: var(--accent-next);
+        }
+
+        .process-step.platform {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .process-step.ai-tool {
+            background: var(--accent-next);
+            color: #0a0a0f;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+            font-size: 1.25rem;
+        }
+
+        .process-arrow {
+            font-size: 2.5rem;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        /* Success Grid */
+        .success-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .success-card {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            padding: 32px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .success-card:hover {
+            background: rgba(59, 130, 246, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        .success-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .success-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Quote Block */
+        .quote-block {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 48px;
+            border-left: 4px solid var(--accent-strategy);
+            background: rgba(168, 85, 247, 0.05);
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+        }
+
+        .quote-block p {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* Wardley Simple Diagram */
+        .wardley-simple {
+            max-width: 800px;
+            margin: 40px auto 0;
+            position: relative;
+        }
+
+        .wardley-axis {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 0;
+        }
+
+        .wardley-y-label {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding-right: 12px;
+        }
+
+        .wardley-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 20px 20px 40px;
+            position: relative;
+        }
+
+        .wardley-node {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-block;
+            margin: 6px 0;
+            position: relative;
+        }
+
+        .wardley-node.need {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            align-self: center;
+            margin-left: 30%;
+        }
+
+        .wardley-node.pain {
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--accent-insight);
+            align-self: center;
+            margin-left: 25%;
+        }
+
+        .wardley-node.sweetspot {
+            background: rgba(34, 197, 94, 0.15);
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            color: var(--accent-evidence);
+            align-self: center;
+            margin-left: 40%;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.15);
+        }
+
+        .wardley-x-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0 0;
+            margin-left: 120px;
+        }
+
+        .wardley-x-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .wardley-zone-label {
+            position: absolute;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+        }
+
+        /* Twigg Lesson */
+        .lesson-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 700px;
+            margin: 40px auto 0;
+            text-align: left;
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-size: 1.15rem;
+            line-height: 1.5;
+        }
+
+        .lesson-item.good-item {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .lesson-item.bad-item {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .lesson-item.key-item {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .lesson-icon {
+            font-size: 1.5rem;
+            min-width: 32px;
+        }
+
+        /* Moat Comparison */
+        .moat-grid {
+            display: grid;
+            grid-template-columns: 1fr 80px 1fr;
+            gap: 0;
+            align-items: center;
+            max-width: 900px;
+            margin: 40px auto 0;
+        }
+
+        .moat-side {
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .moat-side.commodity {
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .moat-side.durable {
+            background: rgba(168, 85, 247, 0.08);
+            border: 2px solid rgba(168, 85, 247, 0.4);
+        }
+
+        .moat-vs {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .moat-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .moat-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* Keyboard Hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 24px;
+            right: 32px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .key {
+            background: var(--bg-secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Highlight Text */
+        .highlight {
+            position: relative;
+            display: inline;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 30%;
+            background: currentColor;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        /* Transition Effect */
+        .slide-content > * {
+            animation: fadeUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Chapter Dot Colors */
+        .chapter-1 .chapter-dot { background: var(--accent-problem); }
+        .chapter-2 .chapter-dot { background: var(--accent-insight); }
+        .chapter-3 .chapter-dot { background: var(--accent-solution); }
+        .chapter-4 .chapter-dot { background: var(--accent-evidence); }
+        .chapter-5 .chapter-dot { background: var(--accent-strategy); }
+        .chapter-6 .chapter-dot { background: var(--accent-next); }
+
+        .chapter-1.active .chapter-dot { background: var(--accent-problem); box-shadow: 0 0 20px var(--accent-problem); }
+        .chapter-2.active .chapter-dot { background: var(--accent-insight); box-shadow: 0 0 20px var(--accent-insight); }
+        .chapter-3.active .chapter-dot { background: var(--accent-solution); box-shadow: 0 0 20px var(--accent-solution); }
+        .chapter-4.active .chapter-dot { background: var(--accent-evidence); box-shadow: 0 0 20px var(--accent-evidence); }
+        .chapter-5.active .chapter-dot { background: var(--accent-strategy); box-shadow: 0 0 20px var(--accent-strategy); }
+        .chapter-6.active .chapter-dot { background: var(--accent-next); box-shadow: 0 0 20px var(--accent-next); }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+        }
+
+        @media (max-width: 767px) {
+            .mobile-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                bottom: 24px;
+                right: 24px;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                background: var(--accent-solution);
+                border: 2px solid rgba(255,255,255,0.2);
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+                z-index: 2001;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+                transition: all 0.3s ease;
+            }
+
+            .mobile-menu-toggle:active {
+                transform: scale(0.95);
+            }
+
+            .chapter-nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                background: rgba(10, 10, 15, 0.98);
+                backdrop-filter: blur(10px);
+                z-index: 2000;
+                padding: 80px 24px 24px;
+                overflow-y: auto;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .chapter-nav.open {
+                transform: translateX(0);
+            }
+
+            .chapter-item {
+                padding: 20px 24px;
+                margin-bottom: 12px;
+                background: rgba(255,255,255,0.08);
+                border-radius: 12px;
+            }
+
+            .chapter-item .chapter-label {
+                font-size: 16px;
+            }
+
+            .chapter-dot {
+                width: 12px;
+                height: 12px;
+            }
+
+            body {
+                overflow: auto;
+            }
+
+            .slides-container {
+                height: auto;
+                overflow: visible;
+            }
+
+            .slide {
+                position: relative;
+                height: auto;
+                min-height: 100vh;
+                padding: 80px 24px 100px 24px;
+                opacity: 1;
+                visibility: visible;
+                display: flex;
+            }
+
+            .slide-counter {
+                top: 24px;
+                left: 24px;
+                right: auto;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+
+            h1 { font-size: 2.5rem; line-height: 1.2; }
+            h2 { font-size: 1.75rem; }
+            .subtitle { font-size: 1.125rem; }
+            .big-number { font-size: 6rem; }
+
+            .comparison-container,
+            .moat-grid {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .moat-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .moat-vs {
+                transform: rotate(90deg);
+            }
+
+            .comp-card { width: 100%; }
+
+            .flow-trio,
+            .stats-grid,
+            .success-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .process-flow {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .process-arrow {
+                transform: rotate(90deg);
+                font-size: 2rem;
+            }
+
+            .shift-table {
+                margin-top: 24px;
+            }
+
+            .shift-row {
+                grid-template-columns: 1fr 30px 1fr;
+                padding: 14px 0;
+            }
+
+            .shift-old, .shift-new {
+                font-size: 0.95rem;
+            }
+
+            .chips-row {
+                gap: 8px;
+            }
+
+            .context-chip {
+                font-size: 0.85rem;
+                padding: 8px 14px;
+            }
+
+            .lesson-item {
+                font-size: 1rem;
+            }
+
+            .quote-block {
+                padding: 24px;
+            }
+
+            .quote-block p {
+                font-size: 1.15rem;
+            }
+
+            .recap-item {
+                padding: 20px;
+                gap: 16px;
+            }
+
+            .recap-number {
+                font-size: 1.5rem;
+                min-width: 40px;
+            }
+
+            .recap-text {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            .big-number { font-size: 4rem; }
+            .slide { padding: 60px 16px 80px 16px; }
+            .stats-grid, .success-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .slide { padding: 60px 48px 80px 48px; }
+            .stats-grid, .success-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .chapter-nav, .mobile-menu-toggle, .slide { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide Counter -->
+    <div class="slide-counter">
+        <span class="current">1</span>/<span class="total">18</span>
+    </div>
+
+    <!-- Chapter Navigation -->
+    <nav class="chapter-nav">
+        <div class="chapter-item chapter-1 active" data-chapter="1">
+            <div class="chapter-dot"></div>
+            <span class="chapter-label">The Problem</span>
+        </div>
+        <div class="chapter-item chapter-2" data-chapter="2">
+            <div class="chapter-dot"></div>
+            <span class="chapter-label">The Insight</span>
+        </div>
+        <div class="chapter-item chapter-3" data-chapter="3">
+            <div class="chapter-dot"></div>
+            <span class="chapter-label">The Solution</span>
+        </div>
+        <div class="chapter-item chapter-4" data-chapter="4">
+            <div class="chapter-dot"></div>
+            <span class="chapter-label">The Evidence</span>
+        </div>
+        <div class="chapter-item chapter-5" data-chapter="5">
+            <div class="chapter-dot"></div>
+            <span class="chapter-label">Strategy</span>
+        </div>
+        <div class="chapter-item chapter-6" data-chapter="6">
+            <div class="chapter-dot"></div>
+            <span class="chapter-label">What's Next</span>
+        </div>
+    </nav>
+
+    <!-- Keyboard Hint -->
+    <div class="keyboard-hint">
+        <span class="key">&larr;</span>
+        <span class="key">&rarr;</span>
+        <span>to navigate</span>
+    </div>
+
+    <!-- Slides -->
+    <div class="slides-container">
+
+        <!-- ==================== CHAPTER 1: THE PROBLEM ==================== -->
+
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-chapter="1">
+            <div class="slide-content">
+                <p style="font-size: 1rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent-problem); margin-bottom: 24px; font-weight: 600;">Product Concept</p>
+                <h1>Context Composer</h1>
+                <p class="subtitle">The missing layer between you and AI</p>
+                <p style="margin-top: 48px; color: var(--text-muted); font-size: 1rem;">
+                    A pre-flight interface for AI context.<br>
+                    See it. Adjust it. Send it. Under 5 seconds.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The copy-paste cycle -->
+        <div class="slide" data-chapter="1">
+            <div class="slide-content">
+                <h2 style="color: var(--accent-problem);">The Daily Friction</h2>
+                <p class="subtitle" style="margin-bottom: 32px;">Every AI power user does this. Every day.</p>
+                <div class="problem-cycle">
+                    <div class="cycle-step">
+                        <div class="cycle-number">1</div>
+                        <div>Open AI chat</div>
+                    </div>
+                    <div class="cycle-arrow">&darr;</div>
+                    <div class="cycle-step">
+                        <div class="cycle-number">2</div>
+                        <div>Re-explain your background <em>again</em></div>
+                    </div>
+                    <div class="cycle-arrow">&darr;</div>
+                    <div class="cycle-step">
+                        <div class="cycle-number">3</div>
+                        <div>Copy-paste from old conversations</div>
+                    </div>
+                    <div class="cycle-arrow">&darr;</div>
+                    <div class="cycle-step">
+                        <div class="cycle-number">4</div>
+                        <div>Hope AI gets the right context</div>
+                    </div>
+                    <div class="cycle-arrow">&darr;</div>
+                    <div class="cycle-step">
+                        <div class="cycle-number">5</div>
+                        <div>Get a mediocre response &mdash; <strong>repeat</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Two bad options -->
+        <div class="slide" data-chapter="1">
+            <div class="slide-content">
+                <h2>Both Extremes Fail</h2>
+                <div class="comparison-container">
+                    <div class="comp-card bad">
+                        <span class="comp-icon">&times;</span>
+                        <h3 class="comp-title" style="color: var(--accent-problem);">Manual Copy-Paste</h3>
+                        <p class="comp-desc">Accurate but painful. Slow. Breaks your flow. You become the integration layer between your knowledge and AI.</p>
+                    </div>
+                    <div class="comp-card warning">
+                        <span class="comp-icon">&times;</span>
+                        <h3 class="comp-title" style="color: var(--accent-insight);">Automatic Retrieval</h3>
+                        <p class="comp-desc">Easy but often wrong. No user control. A black box that guesses what's relevant. When it's wrong, you can't fix it.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 48px; font-size: 1.5rem; font-weight: 600;">There is nothing in between.</p>
+            </div>
+        </div>
+
+        <!-- ==================== CHAPTER 2: THE INSIGHT ==================== -->
+
+        <!-- Slide 4: Paradigm shift -->
+        <div class="slide" data-chapter="2">
+            <div class="slide-content">
+                <h1 style="color: var(--accent-insight);">Context is Curation,<br>Not Search</h1>
+                <div class="shift-table">
+                    <div class="shift-row">
+                        <div class="shift-old">"Where is the file?"</div>
+                        <div class="shift-arrow">&rarr;</div>
+                        <div class="shift-new">"What should AI know right now?"</div>
+                    </div>
+                    <div class="shift-row">
+                        <div class="shift-old">Navigate folders</div>
+                        <div class="shift-arrow">&rarr;</div>
+                        <div class="shift-new">Curate context</div>
+                    </div>
+                    <div class="shift-row">
+                        <div class="shift-old">Search and paste</div>
+                        <div class="shift-arrow">&rarr;</div>
+                        <div class="shift-new">Confirm and adjust</div>
+                    </div>
+                    <div class="shift-row">
+                        <div class="shift-old">Think in file paths</div>
+                        <div class="shift-arrow">&rarr;</div>
+                        <div class="shift-new">Think in focus</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Camera analogy -->
+        <div class="slide" data-chapter="2">
+            <div class="slide-content">
+                <h2 style="margin-bottom: 40px;">Think: <span style="color: var(--accent-insight);">Camera Focus</span></h2>
+                <div class="comparison-container">
+                    <div class="comp-card bad">
+                        <span class="comp-icon" style="font-size: 5rem;">&#128247;</span>
+                        <h3 class="comp-title" style="color: var(--accent-problem);">Point and Shoot</h3>
+                        <p class="comp-desc">Hope AI figures out what matters. No control over what it sees. Cross your fingers.</p>
+                    </div>
+                    <div class="comp-card good">
+                        <span class="comp-icon" style="font-size: 5rem;">&#127919;</span>
+                        <h3 class="comp-title" style="color: var(--accent-solution);">Focus, Then Shoot</h3>
+                        <p class="comp-desc">See what AI will consider. Adjust the focus. Then send. 3 seconds of control = dramatically better results.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 40px; color: var(--accent-insight); font-size: 1.2rem; font-weight: 500;">The Context Composer is camera focus for AI.</p>
+            </div>
+        </div>
+
+        <!-- ==================== CHAPTER 3: THE SOLUTION ==================== -->
+
+        <!-- Slide 6: Context Composer intro -->
+        <div class="slide" data-chapter="3">
+            <div class="slide-content">
+                <h1 style="color: var(--accent-solution);">Context Composer</h1>
+                <p style="font-size: 1.75rem; line-height: 1.5; max-width: 800px; margin: 24px auto 0; font-weight: 400;">
+                    A pre-flight interface that makes AI context<br>
+                    <span style="color: var(--accent-solution); font-weight: 600;">visible</span>,
+                    <span style="color: var(--accent-solution); font-weight: 600;">editable</span>, and
+                    <span style="color: var(--accent-solution); font-weight: 600;">adjustable</span><br>
+                    in under 5 seconds.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Propose, Adjust, Send -->
+        <div class="slide" data-chapter="3">
+            <div class="slide-content">
+                <h2>The Core Interaction</h2>
+                <div class="flow-trio">
+                    <div class="flow-card propose">
+                        <div class="flow-step-number" style="color: var(--accent-solution);">1</div>
+                        <div class="flow-step-title" style="color: var(--accent-solution);">Propose</div>
+                        <div class="flow-step-desc">System suggests relevant context: current thread, recent decisions, related memories.</div>
+                    </div>
+                    <div class="flow-card adjust">
+                        <div class="flow-step-number" style="color: var(--accent-solution);">2</div>
+                        <div class="flow-step-title" style="color: var(--accent-solution);">Adjust</div>
+                        <div class="flow-step-desc">You add, remove, or expand. Swipe, tap, done. Under 5 seconds.</div>
+                    </div>
+                    <div class="flow-card send">
+                        <div class="flow-step-number" style="color: var(--accent-solution);">3</div>
+                        <div class="flow-step-title" style="color: var(--accent-solution);">Send</div>
+                        <div class="flow-step-desc">Prompt goes with curated context attached. Better input, better output.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Context Chips -->
+        <div class="slide" data-chapter="3">
+            <div class="slide-content">
+                <h2>Context <span style="color: var(--accent-solution);">Chips</span></h2>
+                <p class="subtitle" style="margin-bottom: 12px;">You see meaning, not metadata. Focus, not file paths.</p>
+                <div class="chips-container">
+                    <div class="chips-row">
+                        <div class="context-chip">
+                            <span class="chip-icon">&#128172;</span>
+                            <span>Thread: Q4 Strategy</span>
+                            <span class="chip-remove">&times;</span>
+                        </div>
+                        <div class="context-chip">
+                            <span class="chip-icon">&#9989;</span>
+                            <span>Decision: Target enterprise first</span>
+                            <span class="chip-remove">&times;</span>
+                        </div>
+                    </div>
+                    <div class="chips-row">
+                        <div class="context-chip">
+                            <span class="chip-icon">&#128196;</span>
+                            <span>Doc: Competitor analysis</span>
+                            <span class="chip-remove">&times;</span>
+                        </div>
+                        <div class="context-chip">
+                            <span class="chip-icon">&#128161;</span>
+                            <span>Memory: Prefers data-driven arguments</span>
+                            <span class="chip-remove">&times;</span>
+                        </div>
+                    </div>
+                    <div class="prompt-input-mock">
+                        Write the executive summary for&hellip;<span class="cursor-blink"></span>
+                    </div>
+                </div>
+                <p style="margin-top: 32px; color: var(--text-muted); font-size: 1rem;">
+                    Each chip is a semantic object &mdash; a thread, a decision, a memory, an artifact. Not a file path.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 9: 5-second rule -->
+        <div class="slide" data-chapter="3">
+            <div class="slide-content">
+                <div class="big-number" style="color: var(--accent-solution);">&lt; 5s</div>
+                <h2 style="margin-top: 24px;">The Non-Negotiable</h2>
+                <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 16px auto 0; line-height: 1.6;">
+                    If context adjustment takes longer than 5 seconds, users skip it. They fall back to copy-paste or blind trust. Every design decision is measured against this bar.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== CHAPTER 4: THE EVIDENCE ==================== -->
+
+        <!-- Slide 10: Demand signals -->
+        <div class="slide" data-chapter="4">
+            <div class="slide-content">
+                <h2 style="color: var(--accent-evidence);">The Demand Is Already Here</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">106</div>
+                        <div class="stat-label">HN upvotes</div>
+                        <div class="stat-desc">"Git for LLMs" &mdash; multiple independent builders converging on the same problem</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">300+</div>
+                        <div class="stat-label">Complaint threads</div>
+                        <div class="stat-desc">ChatGPT memory crisis &mdash; "destroyed years of creative work"</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">New</div>
+                        <div class="stat-label">"Context engineering"</div>
+                        <div class="stat-desc">Named by Anthropic, VS Code, and industry &mdash; the vocabulary is catching up</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$1.5M</div>
+                        <div class="stat-label">Seed round</div>
+                        <div class="stat-desc">Prom.dev raised for prompt management alone &mdash; and they don't solve context</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: The gap -->
+        <div class="slide" data-chapter="4">
+            <div class="slide-content">
+                <h2>Everyone Builds for <span style="color: var(--accent-problem);">Developers</span></h2>
+                <div class="comparison-container">
+                    <div class="comp-card bad">
+                        <span class="comp-icon" style="font-size: 3.5rem;">&#128187;</span>
+                        <h3 class="comp-title" style="color: var(--accent-problem);">What Exists</h3>
+                        <p class="comp-desc">CLI tools. YAML configs. Code-only context pills. Tree-view chat UIs. All developer-facing. All require technical setup.</p>
+                    </div>
+                    <div class="comp-card highlight">
+                        <span class="comp-icon" style="font-size: 3.5rem;">&#128064;</span>
+                        <h3 class="comp-title" style="color: var(--accent-evidence);">What's Missing</h3>
+                        <p class="comp-desc">A visual, non-technical context curation interface for product managers, consultants, writers &mdash; anyone who uses AI daily but doesn't write code.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 40px; font-size: 1.3rem; font-weight: 500;">Nobody builds for the <span style="color: var(--accent-evidence);">knowledge worker</span>.</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Twigg lesson -->
+        <div class="slide" data-chapter="4">
+            <div class="slide-content">
+                <h2 style="color: var(--accent-evidence);">Competitive Intelligence</h2>
+                <p class="subtitle" style="margin-bottom: 16px;">The Twigg.ai lesson</p>
+                <div class="lesson-list">
+                    <div class="lesson-item good-item">
+                        <span class="lesson-icon">&#9989;</span>
+                        <div><strong>Solved the right problem</strong> &mdash; tree-view context management for complex LLM projects. 106 HN upvotes.</div>
+                    </div>
+                    <div class="lesson-item bad-item">
+                        <span class="lesson-icon">&#10060;</span>
+                        <div><strong>Asked users to switch interfaces</strong> &mdash; built a standalone chat app. Social went stale. Traction stalled.</div>
+                    </div>
+                    <div class="lesson-item key-item">
+                        <span class="lesson-icon">&#128161;</span>
+                        <div><strong>Lesson: Build a layer, not a destination.</strong> Don't ask people to leave their tools. Meet them where they already are.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CHAPTER 5: STRATEGIC POSITION ==================== -->
+
+        <!-- Slide 13: Wardley sweet spot -->
+        <div class="slide" data-chapter="5">
+            <div class="slide-content">
+                <h2 style="color: var(--accent-strategy);">Strategic Sweet Spot</h2>
+                <p class="subtitle" style="margin-bottom: 16px;">Wardley Map positioning</p>
+                <div class="wardley-simple">
+                    <div class="wardley-axis">
+                        <div class="wardley-y-label">Value Chain (visible &uarr;)</div>
+                        <div class="wardley-grid">
+                            <div class="wardley-node need">Better AI Output <span style="color: var(--text-muted); font-weight: 400; font-size: 0.85rem;">&mdash; user need</span></div>
+                            <div style="text-align: center; color: var(--text-muted); font-size: 1.5rem; margin: 4px 0;">&darr;</div>
+                            <div class="wardley-node pain" style="margin-left: 20%;">Context Assembly <span style="font-weight: 400; font-size: 0.85rem;">&mdash; pain point</span></div>
+                            <div style="text-align: center; color: var(--text-muted); font-size: 1.5rem; margin: 4px 0;">&darr;</div>
+                            <div class="wardley-node sweetspot">Context Composer <span style="font-weight: 400; font-size: 0.85rem;">&mdash; Custom &rarr; Product</span></div>
+                            <p style="text-align: center; margin-top: 20px; color: var(--accent-strategy); font-size: 1rem; font-weight: 600;">Vertical AI SaaS for knowledge workers</p>
+                        </div>
+                    </div>
+                    <div class="wardley-x-labels">
+                        <span class="wardley-x-label">Genesis</span>
+                        <span class="wardley-x-label">Custom</span>
+                        <span class="wardley-x-label" style="color: var(--accent-evidence); font-weight: 700;">Product</span>
+                        <span class="wardley-x-label">Commodity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Behavioral moat -->
+        <div class="slide" data-chapter="5">
+            <div class="slide-content">
+                <h2>The <span style="color: var(--accent-strategy);">Behavioral</span> Moat</h2>
+                <div class="moat-grid">
+                    <div class="moat-side commodity">
+                        <div class="moat-title" style="color: var(--accent-problem);">Commoditizes</div>
+                        <div class="moat-items">
+                            <span>LLM APIs</span>
+                            <span>Vector databases</span>
+                            <span>Cloud hosting</span>
+                            <span>Orchestration tools</span>
+                        </div>
+                        <p style="margin-top: 16px; color: var(--accent-problem); font-size: 0.85rem; font-weight: 600;">Big Tech territory</p>
+                    </div>
+                    <div class="moat-vs">vs</div>
+                    <div class="moat-side durable">
+                        <div class="moat-title" style="color: var(--accent-strategy);">Won't Commoditize</div>
+                        <div class="moat-items">
+                            <span>Human judgment</span>
+                            <span>Context curation</span>
+                            <span>"What matters right now"</span>
+                            <span>User behavior data</span>
+                        </div>
+                        <p style="margin-top: 16px; color: var(--accent-strategy); font-size: 0.85rem; font-weight: 600;">Durable moat</p>
+                    </div>
+                </div>
+                <p style="margin-top: 40px; font-size: 1.3rem; font-weight: 500;">
+                    Infrastructure gets cheaper. <span style="color: var(--accent-strategy);">Judgment doesn't.</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Strategic path -->
+        <div class="slide" data-chapter="5">
+            <div class="slide-content">
+                <h2 style="color: var(--accent-strategy);">Strategic Path</h2>
+                <p class="subtitle" style="margin-bottom: 32px;">Build only what users pull you toward</p>
+                <div class="recap-list">
+                    <div class="recap-item" style="border-left-color: var(--accent-evidence);">
+                        <div class="recap-number" style="color: var(--accent-evidence);">1</div>
+                        <div class="recap-text">
+                            <strong>Context Composer MVP</strong> <span style="color: var(--accent-evidence);">(now)</span>
+                            <div class="muted">Solve context assembly for AI power users. Browser extension that works inside ChatGPT, Claude, Gemini.</div>
+                        </div>
+                    </div>
+                    <div class="recap-item" style="border-left-color: var(--accent-insight);">
+                        <div class="recap-number" style="color: var(--accent-insight);">2</div>
+                        <div class="recap-text">
+                            <strong>Governed Memory</strong> <span style="color: var(--accent-insight);">(6&ndash;12 months)</span>
+                            <div class="muted">AI proposes memory candidates, humans validate. The trust layer that makes context reliable.</div>
+                        </div>
+                    </div>
+                    <div class="recap-item" style="border-left-color: var(--accent-strategy); opacity: 0.7;">
+                        <div class="recap-number">3</div>
+                        <div class="recap-text">
+                            <strong>Thread Workspaces</strong> <span style="color: var(--text-muted);">(12&ndash;24 months, if validated)</span>
+                            <div class="muted">Situation-based knowledge organization. Only build if users demand it.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== CHAPTER 6: WHAT'S NEXT ==================== -->
+
+        <!-- Slide 16: Go-to-market -->
+        <div class="slide" data-chapter="6">
+            <div class="slide-content">
+                <h2 style="color: var(--accent-next);">Build a Layer, Not a Destination</h2>
+                <div class="process-flow">
+                    <div class="process-step ext">
+                        Browser<br>Extension
+                    </div>
+                    <div class="process-arrow">&rarr;</div>
+                    <div class="process-step ai-tool">
+                        Works Inside<br>ChatGPT &bull; Claude &bull; Gemini
+                    </div>
+                    <div class="process-arrow">&rarr;</div>
+                    <div class="process-step platform">
+                        Zero<br>Switching Cost
+                    </div>
+                </div>
+                <p style="margin-top: 48px; font-size: 1.3rem; color: var(--text-muted); max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                    Users stay where they are. The Context Composer comes to them.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 17: Success metrics -->
+        <div class="slide" data-chapter="6">
+            <div class="slide-content">
+                <h2 style="color: var(--accent-next);">What Success Looks Like</h2>
+                <div class="success-grid">
+                    <div class="success-card">
+                        <div class="success-icon">&#9889;</div>
+                        <div class="success-title">Minutes &rarr; Seconds</div>
+                        <div class="success-desc">Context assembly time drops from minutes of copy-paste to seconds of confirm-and-adjust</div>
+                    </div>
+                    <div class="success-card">
+                        <div class="success-icon">&#128200;</div>
+                        <div class="success-title">Better AI Output</div>
+                        <div class="success-desc">Better context in means dramatically better responses out. Users notice immediately.</div>
+                    </div>
+                    <div class="success-card">
+                        <div class="success-icon">&#128274;</div>
+                        <div class="success-title">"Can't Go Back"</div>
+                        <div class="success-desc">The Context Composer becomes default behavior. Raw prompting feels broken without it.</div>
+                    </div>
+                    <div class="success-card">
+                        <div class="success-icon">&#128483;</div>
+                        <div class="success-title">No Re-Explaining</div>
+                        <div class="success-desc">Users stop repeating their background in every conversation. Context carries forward.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Closing -->
+        <div class="slide" data-chapter="6">
+            <div class="slide-content">
+                <div class="quote-block">
+                    <p>
+                        The Context Composer is a <span style="color: var(--accent-strategy);">Vertical AI SaaS for knowledge workers</span>, positioned in the <span style="color: var(--accent-evidence);">Custom &rarr; Product sweet spot</span>, solving the emerging <span style="color: var(--accent-solution);">"context assembly"</span> pain that sits at the top of the AI value chain.
+                    </p>
+                </div>
+                <p style="margin-top: 48px; color: var(--text-muted); font-size: 1.1rem;">
+                    The rest of the vision &mdash; governed memory, thread workspaces, four-layer architecture &mdash; is strategic optionality. Not the starting bet.
+                </p>
+                <p style="margin-top: 24px; font-size: 1.5rem; font-weight: 600; color: var(--accent-solution);">
+                    Start near the user. Not near the GPUs.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Slide Management
+        const slides = document.querySelectorAll('.slide');
+        const chapterItems = document.querySelectorAll('.chapter-item');
+        const currentSpan = document.querySelector('.slide-counter .current');
+        const totalSpan = document.querySelector('.slide-counter .total');
+
+        let currentSlide = 0;
+        totalSpan.textContent = slides.length;
+
+        function updateSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= slides.length) index = slides.length - 1;
+
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+
+            currentSlide = index;
+            currentSpan.textContent = index + 1;
+
+            const currentChapter = slides[index].dataset.chapter;
+            chapterItems.forEach(item => {
+                item.classList.toggle('active', item.dataset.chapter === currentChapter);
+            });
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                const nextIndex = currentSlide + 1;
+                if (nextIndex < slides.length) {
+                    if (window.innerWidth < 768) {
+                        slides[nextIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        updateSlide(nextIndex);
+                    }
+                }
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const prevIndex = currentSlide - 1;
+                if (prevIndex >= 0) {
+                    if (window.innerWidth < 768) {
+                        slides[prevIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        updateSlide(prevIndex);
+                    }
+                }
+            }
+        });
+
+        // Chapter Click Navigation
+        chapterItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const chapter = item.dataset.chapter;
+                const firstSlideOfChapter = Array.from(slides).findIndex(
+                    slide => slide.dataset.chapter === chapter
+                );
+                if (firstSlideOfChapter !== -1) {
+                    if (window.innerWidth < 768) {
+                        slides[firstSlideOfChapter].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        currentSlide = firstSlideOfChapter;
+                        currentSpan.textContent = firstSlideOfChapter + 1;
+                    } else {
+                        updateSlide(firstSlideOfChapter);
+                    }
+                }
+            });
+        });
+
+        // Touch Navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            if (window.innerWidth >= 768) {
+                touchStartX = e.changedTouches[0].screenX;
+            }
+        });
+
+        document.addEventListener('touchend', (e) => {
+            if (window.innerWidth >= 768) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    updateSlide(currentSlide + 1);
+                } else {
+                    updateSlide(currentSlide - 1);
+                }
+            }
+        }
+
+        // Mobile scroll tracking
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth < 768) {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    const scrollPosition = window.scrollY + window.innerHeight / 2;
+                    let activeIndex = 0;
+                    slides.forEach((slide, index) => {
+                        const slideTop = slide.offsetTop;
+                        const slideBottom = slideTop + slide.offsetHeight;
+                        if (scrollPosition >= slideTop && scrollPosition < slideBottom) {
+                            activeIndex = index;
+                        }
+                    });
+                    currentSlide = activeIndex;
+                    currentSpan.textContent = activeIndex + 1;
+                    const currentChapter = slides[activeIndex].dataset.chapter;
+                    chapterItems.forEach(item => {
+                        item.classList.toggle('active', item.dataset.chapter === currentChapter);
+                    });
+                }, 100);
+            }
+        });
+
+        // Initialize
+        updateSlide(0);
+
+        // Mobile menu toggle
+        const menuToggle = document.createElement('button');
+        menuToggle.className = 'mobile-menu-toggle';
+        menuToggle.innerHTML = '&#9776;';
+        menuToggle.setAttribute('aria-label', 'Toggle chapter navigation');
+        document.body.appendChild(menuToggle);
+
+        const chapterNav = document.querySelector('.chapter-nav');
+        let menuOpen = false;
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuOpen = !menuOpen;
+            chapterNav.classList.toggle('open', menuOpen);
+            menuToggle.innerHTML = menuOpen ? '&#10005;' : '&#9776;';
+            document.body.style.overflow = menuOpen ? 'hidden' : '';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (menuOpen && !chapterNav.contains(e.target)) {
+                menuOpen = false;
+                chapterNav.classList.remove('open');
+                menuToggle.innerHTML = '&#9776;';
+                document.body.style.overflow = '';
+            }
+        });
+
+        chapterItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth < 768) {
+                    menuOpen = false;
+                    chapterNav.classList.remove('open');
+                    menuToggle.innerHTML = '&#9776;';
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth >= 768) {
+                    chapterNav.classList.remove('open');
+                    menuToggle.innerHTML = '&#9776;';
+                    menuOpen = false;
+                    document.body.style.overflow = '';
+                }
+            }, 250);
+        });
+    </script>
+</body>
+</html>
