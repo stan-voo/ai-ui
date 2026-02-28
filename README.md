@@ -1,4 +1,4 @@
-# AI-UI Playbook
+# Context Composer Playbook
 
 **What should the interface for human knowledge look like in the AI era?**
 
